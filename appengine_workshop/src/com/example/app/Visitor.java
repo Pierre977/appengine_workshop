@@ -2,6 +2,7 @@ package com.example.app;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Visitor {
@@ -11,8 +12,10 @@ public class Visitor {
 	
 	private String nickName;
 	
+	@Index
 	private String email;
 	
+	@Index
 	private Long visitTimeStamp;
 	
 	private String visitTime;

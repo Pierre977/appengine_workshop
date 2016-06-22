@@ -49,13 +49,23 @@ public class VisitorServlet extends HttpServlet {
 		ObjectifyService.ofy().cache(false).save().entity(visitor).now();
 		
 		result += "<br>Visitors: <br>";
-		List<Visitor> visitors = ObjectifyService.ofy().cache(false).load().type(Visitor.class).list();
+		List<Visitor> visitors = getVisitorList(user);
 		for(Visitor oldVisitor : visitors) {
 			result += oldVisitor.getVisitTime() + " " + oldVisitor.getNickName() + " " + oldVisitor.getEmail() + "<br>";
 		}
 		
 		resp.getWriter().println(result);
 		resp.setContentType("text/html");
+	}
+	
+	private List<Visitor> getVisitorList(User user) {
+		List<Visitor> vititors = null;
+		if (user != null) {
+			vititors = ObjectifyService.ofy().cache(false).load().type(Visitor.class).filter("email", user.getEmail()).order("-visitTimeStamp").list();
+		} else {
+			vititors = ObjectifyService.ofy().cache(false).load().type(Visitor.class).order("-visitTimeStamp").list();
+		}
+		return vititors;
 	}
 	
 	private Visitor createVisitor(User user) {
